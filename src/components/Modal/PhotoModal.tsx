@@ -1,17 +1,18 @@
-import { Direction } from '~/types/direction'
+import { Direction } from '~/types/enum/direction'
 import NextPhotoButton from '~/components/Button/NextModalButton'
 import CloseModalButton from '~/components/Button/CloseModalButton'
 import AvatarWithName from '~/components/User/AvatarWithName'
 import ButtonPrimary from '~/components/Button/ButtonPrimary'
 import { colors } from '~/styles/colors'
 import { useEffect, useRef } from 'react'
+import { Photo } from '~/types/schema/PhotoSchema'
 
 interface PhotoModalProps {
-  photoSrc: string
+  photo: Photo
   onClose: () => void
 }
 
-export default function PhotoModal({ photoSrc, onClose }: PhotoModalProps) {
+export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
 
   // Temporarily disable outer modal content scrolling when modal is open
@@ -25,7 +26,7 @@ export default function PhotoModal({ photoSrc, onClose }: PhotoModalProps) {
   }, [])
 
   // Handle modal scroll event on backdrop area
-  const handleScroll = (e: React.WheelEvent) => {
+  function handleScroll(e: React.WheelEvent) {
     if (modalRef.current) {
       modalRef.current.scrollBy({
         top: e.deltaY,
@@ -36,80 +37,89 @@ export default function PhotoModal({ photoSrc, onClose }: PhotoModalProps) {
   }
 
   return (
-    // Backdrop Area
-    <div
-      className='
-        fixed inset-0 
-        max-h-full
-        overflow-y-auto
-        lg:px-32
-        md:px-16
-        pt-4
-        cursor-zoom-out
-        flex items-center justify-center 
-        bg-black bg-opacity-50 z-30
-      '
-      onClick={(e) => {
-        e.stopPropagation()
-        onClose()
-      }}
-      onWheel={handleScroll}
-    >
+    <div>
       {/* Close Modal Button */}
-      <CloseModalButton />
+      <CloseModalButton
+        onClick={(e) => {
+          e.stopPropagation()
+          onClose()
+        }}
+      />
       {/* Left Photo Button */}
       <NextPhotoButton direction={Direction.Left} onClick={() => {}} />
       {/* Right Photo Button */}
       <NextPhotoButton direction={Direction.Right} onClick={() => {}} />
-      {/* Modal Content */}
+      // Backdrop Area
       <div
-        className='relative w-full h-full cursor-default bg-white rounded-md shadow-lg'
-        onClick={(e) => e.stopPropagation()} // Prevent click event propagation from inner content
+        className='
+          fixed inset-0 
+          max-h-full
+          overflow-y-auto
+          lg:px-32
+          md:px-16
+          pt-4
+          cursor-zoom-out
+          flex items-center justify-center 
+          bg-black bg-opacity-50 z-30
+        '
+        onClick={(e) => {
+          e.stopPropagation()
+          onClose()
+        }}
+        onWheel={handleScroll}
       >
         <div
-          className='w-full flex flex-col items-center'
-          style={{ maxHeight: '100vh' }}
+          className='relative w-full h-full cursor-default bg-white rounded-md shadow-lg'
+          onClick={(e) => e.stopPropagation()} // Prevent click event propagation from inner content
         >
-          {/* Header */}
-          <div className='w-full px-5 py-3 flex justify-between items-center'>
-            <AvatarWithName />
-            <ButtonPrimary
-              buttonText='Download'
-              onClick={() => {}}
-              isEnabled={false}
-            />
-          </div>
-          {/* Photo view */}
           <div
-            className='w-full h-full lg:px-5 sm:px-0 py-3 flex justify-center'
-            style={{ maxHeight: '84vh' }}
+            className='w-full flex flex-col items-center'
+            style={{ maxHeight: '100vh' }}
           >
-            <img src={photoSrc} alt='photo' className='object-contain' />
-          </div>
-          {/* Views and Downloads count */}
-          <div
-            className='
-              w-full h-16 px-5 pt-4 leading-5 
-              flex 
-              lg:flex-row lg:gap-40
-              justify-start items-start
-              flex-col gap-6
-            '
-          >
-            <div className='h-full leading-5'>
-              <p className='text-sm' style={{ color: colors.textTertiary }}>
-                Views
-              </p>
-              <p style={{ color: colors.textDefault }}>53482</p>
+            {/* Header */}
+            <div className='w-full px-5 py-3 flex justify-between items-center'>
+              <AvatarWithName user={photo.user} />
+              <ButtonPrimary
+                buttonText='Download'
+                onClick={() => {}}
+                isEnabled={false}
+              />
             </div>
-            <div className='h-full leading-5'>
-              <p className='text-sm' style={{ color: colors.textTertiary }}>
-                Downloads
-              </p>
-              <p style={{ color: colors.textDefault }}>1024</p>
+            {/* Photo view */}
+            <div
+              className='w-full h-full lg:px-5 sm:px-0 py-3 flex justify-center'
+              style={{ height: '84vh' }}
+            >
+              <img
+                src={photo.urls.full}
+                alt='photo'
+                className='object-contain h-full w-auto'
+              />
+            </div>
+            {/* Views and Downloads count */}
+            <div
+              className='
+                w-full h-16 px-5 pt-4 leading-5 
+                flex 
+                lg:flex-row lg:gap-40
+                justify-start items-start
+                flex-col gap-6
+              '
+            >
+              <div className='h-full leading-5'>
+                <p className='text-sm' style={{ color: colors.textTertiary }}>
+                  Views
+                </p>
+                <p style={{ color: colors.textDefault }}>53482</p>
+              </div>
+              <div className='h-full leading-5'>
+                <p className='text-sm' style={{ color: colors.textTertiary }}>
+                  Downloads
+                </p>
+                <p style={{ color: colors.textDefault }}>{photo.likes}</p>
+              </div>
             </div>
           </div>
-          <div className='w-full h-64 bg-black'></div>
         </div>
       </div>
     </div>

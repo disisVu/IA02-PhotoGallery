@@ -5,7 +5,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useHover from '~/hooks/useHover'
 import { colors } from '~/styles/colors'
-import { Direction } from '~/types/direction'
+import { Direction } from '~/types/enum/direction'
 
 interface NextPhotoButtonProps {
   direction: Direction
@@ -22,14 +22,15 @@ export default function NextPhotoButton({
     <div
       className={`
         absolute 
+        z-40 
         ${direction === Direction.Right ? 'right-0' : 'left-0'} 
         top-1/2 transform -translate-y-1/2 
-        z-40 
         lg:w-32
         md:w-16
         py-24
         cursor-pointer
-        flex justify-center items-center
+        lg:flex md:flex justify-center items-center
+        hidden
       `}
       onClick={(e) => {
         e.stopPropagation()

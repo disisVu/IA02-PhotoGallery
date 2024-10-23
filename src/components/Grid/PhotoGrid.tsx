@@ -1,13 +1,13 @@
-import { photos } from '~/helpers/readImageFiles'
 import PhotoCard from '~/components/Card/PhotoCard'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
+import { Photo } from '~/types/schema/PhotoSchema'
 // import InfiniteScroll from 'react-infinite-scroll-component'
 
-type PhotoModule = {
-  default: string
+interface PhotoGridProps {
+  photos: Photo[]
 }
 
-export default function PhotoGrid() {
+export default function PhotoGrid({ photos }: PhotoGridProps) {
   return (
     <div
       className='
@@ -20,14 +20,8 @@ export default function PhotoGrid() {
     >
       <ResponsiveMasonry columnsCountBreakPoints={{ 640: 1, 768: 2, 990: 3 }}>
         <Masonry gutter='24px'>
-          {Object.entries(photos).map(([path, module], index) => {
-            const photoModule = module as PhotoModule
-            return (
-              <PhotoCard
-                key={`${path}-${index}`}
-                photoUrl={photoModule.default}
-              />
-            )
+          {photos.map((photo, index) => {
+            return <PhotoCard key={`photo-${index}`} photo={photo} />
           })}
         </Masonry>
       </ResponsiveMasonry>

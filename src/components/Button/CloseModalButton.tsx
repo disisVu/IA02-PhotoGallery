@@ -4,7 +4,7 @@ import useHover from '~/hooks/useHover'
 import { colors } from '~/styles/colors'
 
 interface CloseModalButtonProps {
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent) => void
 }
 
 export default function CloseModalButton({ onClick }: CloseModalButtonProps) {
@@ -12,7 +12,7 @@ export default function CloseModalButton({ onClick }: CloseModalButtonProps) {
 
   return (
     <div
-      className='absolute top-0 left-0 w-12 h-12 cursor-pointer flex justify-center items-center'
+      className='absolute z-40 top-0 left-0 w-12 h-12 cursor-pointer lg:flex md:flex justify-center items-center hidden'
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
