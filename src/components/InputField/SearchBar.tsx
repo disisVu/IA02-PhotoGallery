@@ -2,12 +2,15 @@ import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
-import { colors } from '~/types/colors'
+import { colors } from '~/styles/colors'
 import { useInputFieldClick } from '~/hooks/useInputFieldClick'
+import useHover from '~/hooks/useHover'
 
 export default function SearchBar() {
   const [isInputFocused, setIsInputFocused] = useState(false)
   const ref = useInputFieldClick(() => setIsInputFocused(false))
+
+  const { isHovered, onMouseEnter, onMouseLeave } = useHover()
 
   return (
     <div
@@ -17,7 +20,11 @@ export default function SearchBar() {
         flex-grow h-full px-4 rounded-full flex flex-row justify-between items-center gap-4
       `}
       style={{
-        backgroundColor: isInputFocused ? colors.bgPrimary : colors.inputPrimary
+        backgroundColor: isInputFocused
+          ? colors.bgPrimary
+          : isHovered
+            ? colors.inputPrimaryHovered
+            : colors.inputPrimary
       }}
     >
       <FontAwesomeIcon
@@ -29,9 +36,7 @@ export default function SearchBar() {
         className='flex-grow text-sm placeholder-gray-500'
         style={{
           color: colors.textPrimary,
-          backgroundColor: isInputFocused
-            ? colors.bgPrimary
-            : colors.inputPrimary,
+          backgroundColor: 'rgba(0,0,0,0)',
           border: 'none',
           outline: 'none',
           boxSizing: 'border-box'
@@ -39,18 +44,33 @@ export default function SearchBar() {
         placeholder='Search photos and illustrations'
         onFocus={() => setIsInputFocused(true)}
       />
-      <SearchButton onClickCallback={() => {}} />
+      <SearchButton
+        onClickCallback={() => {}}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      />
     </div>
   )
 }
 
 interface SearchButtonProps {
   onClickCallback: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }
 
-function SearchButton({ onClickCallback }: SearchButtonProps) {
+function SearchButton({
+  onClickCallback,
+  onMouseEnter,
+  onMouseLeave
+}: SearchButtonProps) {
   return (
-    <div className='cursor-pointer' onClick={onClickCallback}>
+    <div
+      className='cursor-pointer'
+      onClick={onClickCallback}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <svg
         width='24'
         height='24'

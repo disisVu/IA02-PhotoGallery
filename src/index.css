@@ -31,6 +31,7 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -68,4 +69,13 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Change the color of the scrollbar */
+::-webkit-scrollbar-thumb {
+  background-color: #eeeeee; /* Scrollbar color */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #aaaaaa; /* Scrollbar color on hover */
 }
