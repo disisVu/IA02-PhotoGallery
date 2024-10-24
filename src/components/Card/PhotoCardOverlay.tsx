@@ -13,8 +13,8 @@ export default function PhotoCardOverlay({ photo }: PhotoCardOverlayProps) {
     <div
       className='absolute z-10 w-full h-full p-3 flex flex-col justify-end items-center shadow-inner'
       style={{
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        boxShadow: 'inset 0px 0px 4rem rgba(0, 0, 0, 0.3)'
+        backgroundColor: 'rgba(0,0,0,0.15)',
+        boxShadow: 'inset 0px 0px 10rem rgba(0, 0, 0, 0.3)'
       }}
     >
       <div className='w-full flex justify-between'>

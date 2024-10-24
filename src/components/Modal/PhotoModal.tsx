@@ -4,8 +4,9 @@ import CloseModalButton from '~/components/Button/CloseModalButton'
 import AvatarWithName from '~/components/User/AvatarWithName'
 import ButtonPrimary from '~/components/Button/ButtonPrimary'
 import { colors } from '~/styles/colors'
-import { useEffect, useRef } from 'react'
-import { Photo } from '~/types/schema/PhotoSchema'
+import { useEffect, useRef, useState } from 'react'
+import { Photo, PhotoStatistic } from '~/types/schema/PhotoSchema'
+import { fetchPhotoStatistic } from '~/api/unsplashApi'
 
 interface PhotoModalProps {
   photo: Photo
@@ -14,6 +15,22 @@ interface PhotoModalProps {
 
 export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
+  const [photoStats, setPhotoStats] = useState<PhotoStatistic>()
+
+  useEffect(() => {
+    fetchPhotoStats()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  async function fetchPhotoStats() {
+    try {
+      const data = await fetchPhotoStatistic(photo.id, undefined, 1)
+      console.log('Fetched data:', data)
+      setPhotoStats(data)
+    } catch (err) {
+      console.error('Error fetching images:', err)
+    }
+  }
 
   // Temporarily disable outer modal content scrolling when modal is open
   useEffect(() => {
@@ -97,28 +114,34 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
               />
             </div>
             {/* Views and Downloads count */}
-            <div
-              className='
+            {photoStats !== undefined && (
+              <div
+                className='
                 w-full h-16 px-5 pt-4 leading-5 
                 flex 
                 lg:flex-row lg:gap-40
                 justify-start items-start
                 flex-col gap-6
               '
-            >
-              <div className='h-full leading-5'>
-                <p className='text-sm' style={{ color: colors.textTertiary }}>
-                  Views
-                </p>
-                <p style={{ color: colors.textDefault }}>53482</p>
+              >
+                <div className='h-full leading-5'>
+                  <p className='text-sm' style={{ color: colors.textTertiary }}>
+                    Views
+                  </p>
+                  <p style={{ color: colors.textDefault }}>
+                    {photoStats.views.total}
+                  </p>
+                </div>
+                <div className='h-full leading-5'>
+                  <p className='text-sm' style={{ color: colors.textTertiary }}>
+                    Downloads
+                  </p>
+                  <p style={{ color: colors.textDefault }}>
+                    {photoStats.downloads.total}
+                  </p>
+                </div>
               </div>
-              <div className='h-full leading-5'>
-                <p className='text-sm' style={{ color: colors.textTertiary }}>
-                  Downloads
-                </p>
-                <p style={{ color: colors.textDefault }}>{photo.likes}</p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

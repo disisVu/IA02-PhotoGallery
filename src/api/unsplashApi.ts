@@ -24,3 +24,22 @@ export const fetchPhotoPage = async (page?: number, perPage?: number) => {
     throw error
   }
 }
+
+export const fetchPhotoStatistic = async (
+  id: string,
+  resolution?: string,
+  quantity?: number
+) => {
+  try {
+    const response = await unsplashApi.get(`/photos/${id}/statistics`, {
+      params: {
+        resolution,
+        quantity
+      }
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching photo statistic:', error)
+    throw error
+  }
+}
