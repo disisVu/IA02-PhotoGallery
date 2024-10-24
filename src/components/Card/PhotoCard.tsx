@@ -16,6 +16,16 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
 
   let mouseEvent: React.MouseEvent | null = null
 
+  function updateURL(id: string) {
+    // Update the URL without reloading the page
+    window.history.replaceState(null, '', `/photos/${id}`)
+  }
+
+  function handleClickPhotoCard() {
+    updateURL(photo.id)
+    openModal()
+  }
+
   function handleMouseEnter(e: React.MouseEvent) {
     mouseEvent = e
     onMouseEnter()
@@ -24,7 +34,7 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
   return (
     <div
       className='relative z-0 rounded-md w-full h-auto cursor-zoom-in'
-      onClick={openModal}
+      onClick={handleClickPhotoCard}
       onMouseEnter={(e) => {
         handleMouseEnter(e)
       }}
@@ -38,7 +48,7 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
           document.body
         )}
       {isHovered && mouseEvent && (
-        <Tooltip text={photo.description!} e={mouseEvent} />
+        <Tooltip text={photo.alt_description!} e={mouseEvent} />
       )}
     </div>
   )

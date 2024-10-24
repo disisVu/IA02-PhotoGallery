@@ -12,13 +12,15 @@ export default function PhotoGrid() {
 
   useEffect(() => {
     handleFetchPhotoPage()
+    console.log('useEffect')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function handleFetchPhotoPage() {
     try {
-      const data = await fetchPhotoPage(page, 10)
+      const data = await fetchPhotoPage(page)
       console.log('Fetched data:', data)
+      console.log('Page: ', page)
 
       // Verify that `data` is a non-empty array before updating state
       if (Array.isArray(data) && data.length > 0) {

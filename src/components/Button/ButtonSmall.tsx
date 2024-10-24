@@ -1,28 +1,39 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useHover from '~/hooks/useHover'
 import { colors } from '~/styles/colors'
+import { ButtonType } from '~/types/enum/buttonType'
 import { IconType, iconMap } from '~/types/enum/iconType'
 
 interface ButtonSmallProps {
-  type: IconType
+  buttonType?: ButtonType
+  iconType: IconType
 }
 
-export default function ButtonSmall({ type }: ButtonSmallProps) {
+export default function ButtonSmall({
+  buttonType = ButtonType.Solid,
+  iconType
+}: ButtonSmallProps) {
   const { isHovered, onMouseEnter, onMouseLeave } = useHover()
 
   return (
     <div
       className={`
         w-10 h-8  
-        ${isHovered ? 'bg-white' : 'bg-gray-200'}
+        ${buttonType === ButtonType.Border ? 'bg-white' : isHovered ? 'bg-white' : 'bg-gray-200'}
         cursor-pointer
         flex justify-center items-center rounded-md
       `}
-      style={{ color: isHovered ? colors.textDefault : colors.textTertiary }}
+      style={{
+        color: isHovered ? colors.textDefault : colors.textTertiary,
+        border:
+          buttonType === ButtonType.Border
+            ? `1px solid ${isHovered ? colors.textSecondary : colors.borderPrimary}`
+            : ''
+      }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <FontAwesomeIcon icon={iconMap[type]} />
+      <FontAwesomeIcon icon={iconMap[iconType]} />
     </div>
   )
 }

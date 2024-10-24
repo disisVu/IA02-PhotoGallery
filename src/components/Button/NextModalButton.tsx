@@ -21,17 +21,19 @@ export default function NextPhotoButton({
   return (
     <div
       className={`
-        absolute 
-        z-40 
+        fixed
+        z-30
         ${direction === Direction.Right ? 'right-0' : 'left-0'} 
-        top-1/2 transform -translate-y-1/2 
         lg:w-32
         md:w-16
         py-24
         cursor-pointer
-        lg:flex md:flex justify-center items-center
-        hidden
+        hidden md:flex lg:flex
+        justify-center items-center
       `}
+      style={{
+        top: 'calc(50vh - 108px)'
+      }}
       onClick={(e) => {
         e.stopPropagation()
         onClick()

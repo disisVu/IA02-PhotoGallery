@@ -12,7 +12,13 @@ export default function CloseModalButton({ onClick }: CloseModalButtonProps) {
 
   return (
     <div
-      className='absolute z-40 top-0 left-0 w-12 h-12 cursor-pointer lg:flex md:flex justify-center items-center hidden'
+      className='
+        fixed z-30 top-0 
+        left-0 w-12 h-12 
+        cursor-pointer 
+        hidden md:flex lg:flex
+        justify-center items-center
+      '
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
