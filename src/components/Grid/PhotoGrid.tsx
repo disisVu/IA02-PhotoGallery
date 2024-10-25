@@ -35,6 +35,22 @@ export default function PhotoGrid() {
     }
   }
 
+  function getAdjacentPhotoIds(currentPhotoId: string) {
+    const currentIndex = photos.findIndex(
+      (photo) => photo.id === currentPhotoId
+    )
+
+    if (currentIndex === -1) {
+      return { prevId: null, nextId: null }
+    }
+
+    const prevId = currentIndex > 0 ? photos[currentIndex - 1].id : null
+    const nextId =
+      currentIndex < photos.length - 1 ? photos[currentIndex + 1].id : null
+
+    return { prevId, nextId }
+  }
+
   return (
     <div className='w-full lg:max-w-[1336px] md:px-6 mx-auto my-6'>
       <InfiniteScroll
@@ -47,7 +63,11 @@ export default function PhotoGrid() {
         <ResponsiveMasonry columnsCountBreakPoints={{ 640: 1, 768: 2, 990: 3 }}>
           <Masonry gutter='24px'>
             {photos.map((photo, index) => (
-              <PhotoCard key={`photo-${photo.id}-${index}`} photo={photo} />
+              <PhotoCard
+                key={`photo-${photo.id}-${index}`}
+                photo={photo}
+                getAdjacentPhotoIds={getAdjacentPhotoIds}
+              />
             ))}
           </Masonry>
         </ResponsiveMasonry>

@@ -24,7 +24,10 @@ export default function ButtonPrimary({
         backgroundColor: isEnabled ? '#ffffff' : '#000000',
         border: `1px solid ${isHovered ? colors.textSecondary : colors.borderPrimary}`
       }}
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick()
+      }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

@@ -7,11 +7,13 @@ import { IconType, iconMap } from '~/types/enum/iconType'
 interface ButtonSmallProps {
   buttonType?: ButtonType
   iconType: IconType
+  onClick: () => void
 }
 
 export default function ButtonSmall({
   buttonType = ButtonType.Solid,
-  iconType
+  iconType,
+  onClick
 }: ButtonSmallProps) {
   const { isHovered, onMouseEnter, onMouseLeave } = useHover()
 
@@ -29,6 +31,10 @@ export default function ButtonSmall({
           buttonType === ButtonType.Border
             ? `1px solid ${isHovered ? colors.textSecondary : colors.borderPrimary}`
             : ''
+      }}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick()
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

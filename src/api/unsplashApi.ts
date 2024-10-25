@@ -25,6 +25,16 @@ export const fetchPhotoPage = async (page?: number, perPage?: number) => {
   }
 }
 
+export const fetchPhotoDetail = async (id: string) => {
+  try {
+    const response = await unsplashApi.get(`/photos/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching photo detail:', error)
+    throw error
+  }
+}
+
 export const fetchPhotoStatistic = async (
   id: string,
   resolution?: string,
@@ -40,6 +50,16 @@ export const fetchPhotoStatistic = async (
     return response.data
   } catch (error) {
     console.error('Error fetching photo statistic:', error)
+    throw error
+  }
+}
+
+export const addPhotoLike = async (id: string) => {
+  try {
+    const response = await unsplashApi.post(`/photos/${id}/like`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching photo detail:', error)
     throw error
   }
 }

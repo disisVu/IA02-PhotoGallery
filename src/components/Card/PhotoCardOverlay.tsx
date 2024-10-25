@@ -3,6 +3,7 @@ import ButtonSmall from '~/components/Button/ButtonSmall'
 import AvatarWithName from '~/components/User/AvatarWithName'
 import { IconType } from '~/types/enum/iconType'
 import { Photo } from '~/types/schema/PhotoSchema'
+import { addPhotoLike } from '~/api/unsplashApi'
 
 interface PhotoCardOverlayProps {
   photo: Photo
@@ -18,11 +19,16 @@ export default function PhotoCardOverlay({ photo }: PhotoCardOverlayProps) {
       }}
     >
       <div className='w-full flex justify-end'>
-        <ButtonSmall iconType={IconType.Like} />
+        <ButtonSmall
+          iconType={IconType.Like}
+          onClick={() => {
+            addPhotoLike(photo.id)
+          }}
+        />
       </div>
       <div className='w-full flex justify-between'>
         <AvatarWithName user={photo.user} type={AvatarWithNameType.thumb} />
-        <ButtonSmall iconType={IconType.Download} />
+        <ButtonSmall iconType={IconType.Download} onClick={() => {}} />
       </div>
     </div>
   )

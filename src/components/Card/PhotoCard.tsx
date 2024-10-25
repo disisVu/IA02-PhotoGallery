@@ -5,21 +5,24 @@ import PhotoModal from '~/components/Modal/PhotoModal'
 import { Photo } from '~/types/schema/PhotoSchema'
 import PhotoCardOverlay from './PhotoCardOverlay'
 import Tooltip from '../Tooltip'
+import { updateURL } from '~/helper/getIdFromUrl'
 
 interface PhotoCardProps {
   photo: Photo
+  getAdjacentPhotoIds: (currentPhotoId: string) => {
+    prevId: string | null
+    nextId: string | null
+  }
 }
 
-export default function PhotoCard({ photo }: PhotoCardProps) {
+export default function PhotoCard({
+  photo,
+  getAdjacentPhotoIds
+}: PhotoCardProps) {
   const { isHovered, onMouseEnter, onMouseLeave } = useHover()
   const { showModal, openModal, closeModal } = useModal()
 
   let mouseEvent: React.MouseEvent | null = null
-
-  function updateURL(id: string) {
-    // Update the URL without reloading the page
-    window.history.replaceState(null, '', `/photos/${id}`)
-  }
 
   function handleClickPhotoCard() {
     updateURL(photo.id)
@@ -44,7 +47,11 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
       <img src={photo.urls.regular} alt='photo' className='w-full h-auto' />
       {showModal &&
         createPortal(
-          <PhotoModal photo={photo} onClose={closeModal} />,
+          <PhotoModal
+            photoId={photo.id}
+            onClose={closeModal}
+            getAdjacentPhotoIds={getAdjacentPhotoIds}
+          />,
           document.body
         )}
       {isHovered && mouseEvent && (
