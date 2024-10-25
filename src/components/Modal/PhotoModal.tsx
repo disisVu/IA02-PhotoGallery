@@ -12,17 +12,19 @@ import {
   fetchPhotoDetail,
   fetchPhotoStatistic
 } from '~/api/unsplashApi'
-import ButtonSmall from '../Button/ButtonSmall'
+import ButtonSmall from '~/components/Button/ButtonSmall'
 import { IconType } from '~/types/enum/iconType'
 import { ButtonType } from '~/types/enum/buttonType'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faDownLeftAndUpRightToCenter,
-  faUpRightAndDownLeftFromCenter
-} from '@fortawesome/free-solid-svg-icons'
-import useHover from '~/hooks/useHover'
 import { useNavigate } from 'react-router-dom'
 import { getIdFromURL, updateURL } from '~/helper/getIdFromUrl'
+import PhotoView from '~/components/Frame/PhotoView'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faCalendar,
+  faCamera,
+  faLocationDot
+} from '@fortawesome/free-solid-svg-icons'
+import { formatDateTime } from '~/helper/formatTime'
 
 interface PhotoModalProps {
   photoId: string
@@ -165,52 +167,66 @@ export default function PhotoModal({
               <div className='w-full h-auto'>
                 {/* Photo view */}
                 <PhotoView photoUrl={photo.urls.full} />
-                {/* Views and Downloads count */}
+                {/* Photo detail */}
                 {photoStats !== undefined && (
                   <div
                     className='
-                    w-full
-                    px-5 py-4 leading-5 
-                    flex flex-col md:flex-row
-                    justify-start items-start
-                    gap-4 md:gap-40
-                    text-sm
-                  '
+                  w-full
+                  px-5 py-4 leading-5 
+                  flex flex-col
+                  justify-start items-start
+                  text-sm
+                  text-left
+                '
                   >
-                    <div className='h-full'>
-                      <p className='' style={{ color: colors.textTertiary }}>
-                        Views
-                      </p>
-                      <p style={{ color: colors.textDefault }}>
-                        {photoStats.views.total}
-                      </p>
+                    {/* Photo Views and Downloads */}
+                    <div className='flex flex-col md:flex-row gap-4 md:gap-40'>
+                      <div>
+                        <p style={{ color: colors.textTertiary }}>Views</p>
+                        <p style={{ color: colors.textDefault }}>
+                          {photoStats.views.total}
+                        </p>
+                      </div>
+                      <div>
+                        <p style={{ color: colors.textTertiary }}>Downloads</p>
+                        <p style={{ color: colors.textDefault }}>
+                          {photoStats.downloads.total}
+                        </p>
+                      </div>
                     </div>
-                    <div className='h-full'>
-                      <p className='' style={{ color: colors.textTertiary }}>
-                        Downloads
-                      </p>
-                      <p style={{ color: colors.textDefault }}>
-                        {photoStats.downloads.total}
-                      </p>
-                    </div>
-                    <div className='h-full'>
-                      <p className='' style={{ color: colors.textTertiary }}>
-                        Description
-                      </p>
+                    {/* Photo Description */}
+                    <div className='pt-8 pb-6'>
+                      <p style={{ color: colors.textTertiary }}>Description</p>
                       <p style={{ color: colors.textDefault }}>
                         {photo.alt_description}
                       </p>
                     </div>
-                    {photo.location.name !== null && (
-                      <div className='h-full'>
-                        <p className='' style={{ color: colors.textTertiary }}>
-                          Location
-                        </p>
-                        <p style={{ color: colors.textDefault }}>
-                          {photo.location.name}
-                        </p>
-                      </div>
-                    )}
+                    {/* Photo Location */}
+                    <div
+                      className='flex flex-col gap-2'
+                      style={{ color: colors.textTertiary }}
+                    >
+                      {photo.location.name !== null && (
+                        <div className='flex flex-row items-center gap-3'>
+                          <FontAwesomeIcon icon={faLocationDot} />
+                          <p>{photo.location.name}</p>
+                        </div>
+                      )}
+                      {/* Photo Created at Time */}
+                      {photo.created_at !== null && (
+                        <div className='flex flex-row items-center gap-3'>
+                          <FontAwesomeIcon icon={faCalendar} />
+                          <p>Published at {formatDateTime(photo.created_at)}</p>
+                        </div>
+                      )}
+                      {/* Photo Exif */}
+                      {photo.exif.name !== null && (
+                        <div className='flex flex-row items-center gap-3'>
+                          <FontAwesomeIcon icon={faCamera} />
+                          <p>{photo.exif.name}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -240,77 +256,6 @@ export default function PhotoModal({
         </div>
       ) : (
         <h4>Loading</h4>
-      )}
-    </>
-  )
-}
-
-interface PhotoViewProps {
-  photoUrl: string
-}
-
-function PhotoView({ photoUrl }: PhotoViewProps) {
-  const {
-    isHovered: photoIsHovered,
-    onMouseEnter: photoOnMouseEnter,
-    onMouseLeave: photoOnMouseLeave
-  } = useHover()
-  const [isExpanded, setIsExpanded] = useState<boolean>(false)
-
-  return (
-    <>
-      <div
-        className='
-          w-full 
-          h-full md:h-[84vh] lg:h-[84vh]
-          lg:px-5 sm:px-0 py-3 
-          flex justify-center
-        '
-      >
-        <div className='relative'>
-          <img
-            src={photoUrl}
-            alt='photo'
-            className='object-contain cursor-zoom-in h-full w-auto'
-            onClick={() => {
-              setIsExpanded((prevState) => !prevState)
-            }}
-            onMouseEnter={photoOnMouseEnter}
-            onMouseLeave={photoOnMouseLeave}
-          />
-          {photoIsHovered && (
-            <div className='absolute top-4 right-4'>
-              <FontAwesomeIcon
-                icon={faUpRightAndDownLeftFromCenter}
-                style={{ color: colors.buttonSecondary }}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-      {isExpanded && (
-        <div
-          className='
-            fixed inset-0 z-50 bg-black bg-opacity-80 cursor-zoom-out overflow-y-auto
-          '
-          onClick={() => {
-            setIsExpanded((prevState) => !prevState)
-          }}
-        >
-          <div className='flex justify-center items-start min-h-screen'>
-            <img
-              src={photoUrl}
-              alt='expanded photo'
-              className='object-cover w-full'
-              style={{ maxWidth: '100%' }}
-            />
-            <FontAwesomeIcon
-              icon={faDownLeftAndUpRightToCenter}
-              className='fixed top-4 right-8'
-              style={{ color: colors.buttonSecondary }}
-            />
-          </div>
-        </div>
       )}
     </>
   )
