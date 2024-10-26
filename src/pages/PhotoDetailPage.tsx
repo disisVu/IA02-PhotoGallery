@@ -4,7 +4,7 @@ import {
   fetchPhotoDetail,
   fetchPhotoStatistic
 } from '~/api/unsplashApi'
-import { getIdFromURL } from '~/helper/getIdFromUrl'
+import { getIdFromURL } from '~/helpers/urlHelpers'
 import { colors } from '~/styles/colors'
 import { Photo } from '~/types/schema/PhotoSchema'
 import { PhotoStatistic } from '~/types/schema/PhotoStatisticSchema'
@@ -12,7 +12,7 @@ import AvatarWithName from '~/components/User/AvatarWithName'
 import ButtonSmall from '~/components/Button/ButtonSmall'
 import { IconType } from '~/types/enum/iconType'
 import { ButtonType } from '~/types/enum/buttonType'
-import ButtonPrimary from '~/components/Button/ButtonPrimary'
+// import ButtonPrimary from '~/components/Button/ButtonPrimary'
 import PhotoView from '~/components/Frame/PhotoView'
 import {
   faCalendar,
@@ -20,7 +20,9 @@ import {
   faLocationDot
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { formatDateTime } from '~/helper/formatTime'
+import { formatDateTime } from '~/helpers/formatTime'
+import ButtonWithDropdown from '~/components/Button/ButtonWithDropdown'
+import { downloadPhoto } from '~/utils/downloadFiles'
 
 export default function PhotoDetailPage() {
   const photoId: string = getIdFromURL()
@@ -54,6 +56,16 @@ export default function PhotoDetailPage() {
     }
   }
 
+  async function handleDownloadPhoto(url: string) {
+    try {
+      const fileName = `${photoId}.jpg`
+      downloadPhoto(url, fileName)
+    } catch (error) {
+      console.log('Failed to download photo. ', error)
+      throw error
+    }
+  }
+
   return (
     <>
       {photo ? (
@@ -72,10 +84,13 @@ export default function PhotoDetailPage() {
                   addPhotoLike(photo.id)
                 }}
               />
-              <ButtonPrimary
+              <ButtonWithDropdown
                 buttonText='Download'
-                onClick={() => {}}
-                isEnabled={true}
+                onClick={() => {
+                  handleDownloadPhoto(photo.urls.full)
+                }}
+                onDropdownSelectClick={handleDownloadPhoto}
+                photoUrls={photo.urls}
               />
             </div>
           </div>
@@ -111,17 +126,20 @@ export default function PhotoDetailPage() {
                   </div>
                 </div>
                 {/* Photo Description */}
-                <div className='pt-8 pb-6'>
-                  <p style={{ color: colors.textTertiary }}>Description</p>
-                  <p style={{ color: colors.textDefault }}>
-                    {photo.alt_description}
-                  </p>
-                </div>
-                {/* Photo Location */}
+                {photo.description !== null && (
+                  <div className='pt-8'>
+                    <p style={{ color: colors.textTertiary }}>Description</p>
+                    <p style={{ color: colors.textDefault }}>
+                      {photo.description}
+                    </p>
+                  </div>
+                )}
+                {/* Other details */}
                 <div
-                  className='flex flex-col gap-2'
+                  className='pt-6 flex-col gap-3'
                   style={{ color: colors.textTertiary }}
                 >
+                  {/* Photo Location */}
                   {photo.location.name !== null && (
                     <div className='flex flex-row items-center gap-3'>
                       <FontAwesomeIcon icon={faLocationDot} />

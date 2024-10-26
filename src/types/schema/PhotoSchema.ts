@@ -28,6 +28,7 @@ export interface Photo {
   blur_hash: string // Blur hash for a low-quality preview
   likes: number // Number of likes on the photo
   liked_by_user: boolean // Indicates if the current user liked the photo
+  description: string | null // Description of the photo (can be null)
   alt_description: string | null // Description of the photo (can be null)
   user: User // User who uploaded the photo
   current_user_collections: Collection[] | null // Collections that the current user has created that this photo belongs to

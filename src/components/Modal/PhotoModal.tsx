@@ -2,7 +2,6 @@ import { Direction } from '~/types/enum/direction'
 import NextPhotoButton from '~/components/Button/NextModalButton'
 import CloseModalButton from '~/components/Button/CloseModalButton'
 import AvatarWithName from '~/components/User/AvatarWithName'
-import ButtonPrimary from '~/components/Button/ButtonPrimary'
 import { colors } from '~/styles/colors'
 import { useEffect, useRef, useState } from 'react'
 import { Photo } from '~/types/schema/PhotoSchema'
@@ -16,7 +15,7 @@ import ButtonSmall from '~/components/Button/ButtonSmall'
 import { IconType } from '~/types/enum/iconType'
 import { ButtonType } from '~/types/enum/buttonType'
 import { useNavigate } from 'react-router-dom'
-import { getIdFromURL, updateURL } from '~/helper/getIdFromUrl'
+import { getIdFromURL, updateURL } from '~/helpers/urlHelpers'
 import PhotoView from '~/components/Frame/PhotoView'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -24,7 +23,9 @@ import {
   faCamera,
   faLocationDot
 } from '@fortawesome/free-solid-svg-icons'
-import { formatDateTime } from '~/helper/formatTime'
+import { formatDateTime } from '~/helpers/formatTime'
+import { downloadPhoto } from '~/utils/downloadFiles'
+import ButtonWithDropdown from '~/components/Button/ButtonWithDropdown'
 
 interface PhotoModalProps {
   photoId: string
@@ -115,6 +116,16 @@ export default function PhotoModal({
     }
   }
 
+  async function handleDownloadPhoto(url: string) {
+    try {
+      const fileName = `${photoId}.jpg`
+      downloadPhoto(url, fileName)
+    } catch (error) {
+      console.log('Failed to download photo. ', error)
+      throw error
+    }
+  }
+
   return (
     <>
       {photo ? (
@@ -156,10 +167,13 @@ export default function PhotoModal({
                       addPhotoLike(photo.id)
                     }}
                   />
-                  <ButtonPrimary
+                  <ButtonWithDropdown
                     buttonText='Download'
-                    onClick={() => {}}
-                    isEnabled={true}
+                    onClick={() => {
+                      handleDownloadPhoto(photo.urls.full)
+                    }}
+                    onDropdownSelectClick={handleDownloadPhoto}
+                    photoUrls={photo.urls}
                   />
                 </div>
               </div>
@@ -171,13 +185,13 @@ export default function PhotoModal({
                 {photoStats !== undefined && (
                   <div
                     className='
-                  w-full
-                  px-5 py-4 leading-5 
-                  flex flex-col
-                  justify-start items-start
-                  text-sm
-                  text-left
-                '
+                      w-full
+                      px-5 py-4 leading-5 
+                      flex flex-col
+                      justify-start items-start
+                      text-sm
+                      text-left
+                    '
                   >
                     {/* Photo Views and Downloads */}
                     <div className='flex flex-col md:flex-row gap-4 md:gap-40'>
@@ -195,17 +209,22 @@ export default function PhotoModal({
                       </div>
                     </div>
                     {/* Photo Description */}
-                    <div className='pt-8 pb-6'>
-                      <p style={{ color: colors.textTertiary }}>Description</p>
-                      <p style={{ color: colors.textDefault }}>
-                        {photo.alt_description}
-                      </p>
-                    </div>
-                    {/* Photo Location */}
+                    {photo.description !== null && (
+                      <div className='pt-8'>
+                        <p style={{ color: colors.textTertiary }}>
+                          Description
+                        </p>
+                        <p style={{ color: colors.textDefault }}>
+                          {photo.description}
+                        </p>
+                      </div>
+                    )}
+                    {/* Other details */}
                     <div
-                      className='flex flex-col gap-2'
+                      className='pt-6 flex flex-col gap-3'
                       style={{ color: colors.textTertiary }}
                     >
+                      {/* Photo Location */}
                       {photo.location.name !== null && (
                         <div className='flex flex-row items-center gap-3'>
                           <FontAwesomeIcon icon={faLocationDot} />

@@ -3,9 +3,9 @@ import useHover from '~/hooks/useHover'
 import useModal from '~/hooks/useModal'
 import PhotoModal from '~/components/Modal/PhotoModal'
 import { Photo } from '~/types/schema/PhotoSchema'
-import PhotoCardOverlay from './PhotoCardOverlay'
-import Tooltip from '../Tooltip'
-import { updateURL } from '~/helper/getIdFromUrl'
+import PhotoCardOverlay from '~/components/Card/PhotoCardOverlay'
+import Tooltip from '~/components/Tooltip'
+import { updateURL } from '~/helpers/urlHelpers'
 
 interface PhotoCardProps {
   photo: Photo

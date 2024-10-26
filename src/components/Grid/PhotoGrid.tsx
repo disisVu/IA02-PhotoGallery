@@ -4,6 +4,7 @@ import { Photo } from '~/types/schema/PhotoSchema'
 import { useEffect, useState } from 'react'
 import { fetchPhotoPage } from '~/api/unsplashApi'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Loader from '~/components/Loader/LoaderIndicator'
 
 export default function PhotoGrid() {
   const [photos, setPhotos] = useState<Photo[]>([])
@@ -57,7 +58,7 @@ export default function PhotoGrid() {
         dataLength={photos.length}
         next={handleFetchPhotoPage}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
+        loader={<Loader />}
         endMessage={<p>No more photos to display.</p>}
       >
         <ResponsiveMasonry columnsCountBreakPoints={{ 640: 1, 768: 2, 990: 3 }}>

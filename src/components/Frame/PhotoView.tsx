@@ -24,7 +24,7 @@ export default function PhotoView({ photoUrl }: PhotoViewProps) {
       <div
         className='
           w-full 
-          h-full md:h-[84vh] lg:h-[84vh]
+          h-full lg:h-[84vh]
           px-0 lg:px-5 py-3 
           flex justify-center
         '

@@ -17,7 +17,7 @@ export default function AvatarWithName({
       <Avatar profileImage={user.profile_image.medium} />
       <div
         className={`
-          h-full flex flex-col leading-5
+          h-full flex flex-col leading-5 text-left
           ${type === AvatarWithNameType.default ? 'justify-between' : 'justify-center'}
         `}
       >
