@@ -1,7 +1,7 @@
 {
   "name": "ia02-photogallery",
-  "homepage": "/IA02-PhotoGallery/#",
-  "private": true,
+  "homepage": "https://github.com/disisVu/IA02-PhotoGallery",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
