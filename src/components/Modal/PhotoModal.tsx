@@ -1,5 +1,5 @@
 import { Direction } from '~/types/enum/direction'
-import NextPhotoButton from '~/components/Button/NextModalButton'
+import NextPhotoButton from '~/components/Button/NextPhotoButton'
 import CloseModalButton from '~/components/Button/CloseModalButton'
 import AvatarWithName from '~/components/User/AvatarWithName'
 import { colors } from '~/styles/colors'
