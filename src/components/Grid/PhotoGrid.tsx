@@ -13,7 +13,6 @@ export default function PhotoGrid() {
 
   useEffect(() => {
     handleFetchPhotoPage()
-    console.log('useEffect')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
