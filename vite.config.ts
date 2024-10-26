@@ -12,7 +12,6 @@ export default defineConfig({
     port: 3000
   },
   plugins: [react(), tsconfigPaths(), svgr()],
-  base: '/IA02-PhotoGallery',
   resolve: {
     alias: {
       '~': path.resolve(__dirname, './src')
