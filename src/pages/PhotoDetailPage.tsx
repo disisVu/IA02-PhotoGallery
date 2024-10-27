@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDateTime } from '~/helpers/formatTime'
 import ButtonWithDropdown from '~/components/Button/ButtonWithDropdown'
 import { downloadPhoto } from '~/utils/downloadFiles'
+import Loader from '~/components/Loader/LoaderIndicator'
 
 export default function PhotoDetailPage() {
   const photoId: string = getIdFromURL()
@@ -166,7 +167,7 @@ export default function PhotoDetailPage() {
           </div>
         </div>
       ) : (
-        <h4>Loading</h4>
+        <Loader />
       )}
     </>
   )
