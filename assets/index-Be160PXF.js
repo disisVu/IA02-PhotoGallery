@@ -651,7 +651,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         ${e===Qn.Border||r?"bg-white":"bg-gray-200"}
         cursor-pointer
         flex justify-center items-center rounded-md
-      `,style:{color:r?j.textDefault:j.textTertiary,border:e===Qn.Border?`1px solid ${r?j.textSecondary:j.borderPrimary}`:""},onClick:l=>{l.stopPropagation(),n()},onMouseEnter:o,onMouseLeave:i,children:v.jsx(ve,{icon:ex[t]})})}function Pm(){const e=window.location.pathname.split("/");return e[e.length-1]}function pa(e){window.history.replaceState(null,"",`/photos/${e}`)}function Nm({photoUrl:e}){const{isHovered:t,onMouseEnter:n,onMouseLeave:r}=xt(),[o,i]=P.useState(!1);return v.jsxs(v.Fragment,{children:[v.jsx("div",{className:`\r
+      `,style:{color:r?j.textDefault:j.textTertiary,border:e===Qn.Border?`1px solid ${r?j.textSecondary:j.borderPrimary}`:""},onClick:l=>{l.stopPropagation(),n()},onMouseEnter:o,onMouseLeave:i,children:v.jsx(ve,{icon:ex[t]})})}function Pm(){const t=window.location.hash.split("/");return t[t.length-1]}function pa(e){window.location.hash=`#/photos/${e}`}function Nm({photoUrl:e}){const{isHovered:t,onMouseEnter:n,onMouseLeave:r}=xt(),[o,i]=P.useState(!1);return v.jsxs(v.Fragment,{children:[v.jsx("div",{className:`\r
           w-full \r
           h-full lg:h-[84vh]\r
           px-0 lg:px-5 py-3 \r
