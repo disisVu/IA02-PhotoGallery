@@ -12,7 +12,6 @@ import AvatarWithName from '~/components/User/AvatarWithName'
 import ButtonSmall from '~/components/Button/ButtonSmall'
 import { IconType } from '~/types/enum/iconType'
 import { ButtonType } from '~/types/enum/buttonType'
-// import ButtonPrimary from '~/components/Button/ButtonPrimary'
 import PhotoView from '~/components/Frame/PhotoView'
 import {
   faCalendar,
@@ -23,6 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDateTime } from '~/helpers/formatTime'
 import ButtonWithDropdown from '~/components/Button/ButtonWithDropdown'
 import { downloadPhoto } from '~/utils/downloadFiles'
+import Loader from '~/components/Loader/LoaderIndicator'
 
 export default function PhotoDetailPage() {
   const photoId: string = getIdFromURL()
@@ -166,7 +166,7 @@ export default function PhotoDetailPage() {
           </div>
         </div>
       ) : (
-        <h4>Loading</h4>
+        <Loader />
       )}
     </>
   )
